@@ -7,7 +7,7 @@ function runPython2(jsonData) {
         const pythonScript = path.join(__dirname, "../api/json_to_excel.py");
 
         // Execute Python script and pass JSON data through stdin
-        const process = execFile("python", [pythonScript], {
+        const process = execFile("python3", [pythonScript], {
             input: JSON.stringify(jsonData),  // Pass JSON as input to stdin
             encoding: "utf-8",
         });

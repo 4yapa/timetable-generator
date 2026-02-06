@@ -6,7 +6,7 @@ const runPython = (fileBuffer) => {
 
     return new Promise((resolve, reject) => {
         const scriptPath = path.join(__dirname, "..", "api", "excel_Parser.py");
-        const pythonProcess = spawn("python", [scriptPath]);
+        const pythonProcess = spawn("python3", [scriptPath]);
 
         pythonProcess.stdin.write(fileBuffer);
         pythonProcess.stdin.end();
