@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/TimetablePage.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const production = import.meta.env.VITE_PRODUCTION;
 const BASE_URL =
@@ -43,14 +45,11 @@ const TimetablePage = () => {
     const handleDownload = async () => {
         console.log("frontend working fine");
         try {
-            // Ensure we send a clean object. If Summary is missing, the backend might need a default or just ignore it.
-            // We construct a payload that includes what we have.
+            
             const payload = { ...timetableData };
 
-            // If Summary is missing, we can optionally add a dummy one if the backend STRICTLY requires it, 
-            // otherwise we send it as is. 
             if (!payload.Summary) {
-                payload.Summary = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // Default dummy stats to prevent backend crash
+                payload.Summary = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             }
 
             const response = await axios.post(
@@ -241,9 +240,11 @@ const TimetablePage = () => {
     };
 
     return (
-        <div className="timetable-container">
-            <h1 className="text-3xl font-bold mb-4 x">TIMETABLE</h1>
-            <table className="timetable-table">
+        <div className="timetable-page-container">
+            <Header />
+            <div className="timetable-container">
+                <h1 className="text-3xl font-bold mb-4 x">TIMETABLE</h1>
+                <table className="timetable-table">
                 <thead>
                     <tr>
                         <th>DAY</th>
@@ -387,43 +388,53 @@ const TimetablePage = () => {
             </div>
 
             {/* Swap Section */}
-            <div className="summary-box" style={{ marginTop: "20px" }}>
-                <h3 className="font-semibold mb-2">Swap Slots Between Days</h3>
-                <div className="flex flex-col gap-2">
-                    <input
-                        type="number"
-                        placeholder="Day A number (1-based)"
-                        value={swapSlotDayA}
-                        onChange={(e) => setSwapSlotDayA(Number(e.target.value))}
-                        className="input-field"
-                    />
-                    <input
-                        type="number"
-                        placeholder="Slot A number (1-based)"
-                        value={swapSlotA}
-                        onChange={(e) => setSwapSlotA(Number(e.target.value))}
-                        className="input-field"
-                    />
-                    <input
-                        type="number"
-                        placeholder="Day B number (1-based)"
-                        value={swapSlotDayB}
-                        onChange={(e) => setSwapSlotDayB(Number(e.target.value))}
-                        className="input-field"
-                    />
-                    <input
-                        type="number"
-                        placeholder="Slot B number (1-based)"
-                        value={swapSlotB}
-                        onChange={(e) => setSwapSlotB(Number(e.target.value))}
-                        className="input-field"
-                    />
-                    <div className="swap-button-container">
-                        <button onClick={handleSwapAnySlots} className="swap-button">
-                            Swap
-                        </button>
+            <div className="swap-section">
+                <h3 className="swap-section-title">Swap Slots Between Days</h3>
+                <div className="swap-inputs-grid">
+                    <div className="swap-input-pair">
+                        <label className="swap-input-pair-label">Day A</label>
+                        <input
+                            type="number"
+                            placeholder="Enter day number"
+                            value={swapSlotDayA}
+                            onChange={(e) => setSwapSlotDayA(Number(e.target.value))}
+                            className="swap-input"
+                        />
+                    </div>
+                    <div className="swap-input-pair">
+                        <label className="swap-input-pair-label">Slot A</label>
+                        <input
+                            type="number"
+                            placeholder="Enter slot number"
+                            value={swapSlotA}
+                            onChange={(e) => setSwapSlotA(Number(e.target.value))}
+                            className="swap-input"
+                        />
+                    </div>
+                    <div className="swap-input-pair">
+                        <label className="swap-input-pair-label">Day B</label>
+                        <input
+                            type="number"
+                            placeholder="Enter day number"
+                            value={swapSlotDayB}
+                            onChange={(e) => setSwapSlotDayB(Number(e.target.value))}
+                            className="swap-input"
+                        />
+                    </div>
+                    <div className="swap-input-pair">
+                        <label className="swap-input-pair-label">Slot B</label>
+                        <input
+                            type="number"
+                            placeholder="Enter slot number"
+                            value={swapSlotB}
+                            onChange={(e) => setSwapSlotB(Number(e.target.value))}
+                            className="swap-input"
+                        />
                     </div>
                 </div>
+                <button onClick={handleSwapAnySlots} className="swap-button">
+                    Swap Slots
+                </button>
             </div>
 
             <button
@@ -447,6 +458,8 @@ const TimetablePage = () => {
                     Download Excel
                 </button>
             </div>
+            </div>
+            <Footer />
         </div>
     );
 };

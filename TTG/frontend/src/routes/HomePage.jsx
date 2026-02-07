@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import "../styles/HomePage.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const production = import.meta.env.VITE_PRODUCTION;
 const BASE_URL =
@@ -60,65 +62,62 @@ const HomePage = () => {
 
     return (
         <div className="home-container">
-            <header className="header">
-                <div className="logo-container">
-                    <img
-                        src="/Timetablelogonew.jpg"
-                        alt="LNMIIT Logo"
-                        className="logo"
-                    />
-                </div>
-            </header>
+            <Header />
 
             <div className="body">
-                <h1 className="homepage-title">📅 Smart Exam Timetable Generator</h1>
+                <div className="hero">
+                    <h1 className="homepage-title">TimeTable Generator</h1>
+                    <p className="homepage-subtitle">Upload your exam roster and configure days, slots and capacity to generate an optimized timetable.</p>
 
-                <div {...getRootProps()} className="dropzone">
-                    <input {...getInputProps()} />
-                    <p>Drag & drop an Excel file here, or click to select one</p>
+                    <div {...getRootProps()} className={`dropzone ${file ? "has-file" : ""}`}>
+                        <input {...getInputProps()} />
+                        {file ? (
+                            <div className="drop-inner">
+                                <span className="checkmark">✓</span>
+                                <p className="file-name-inline">{file.name}</p>
+                            </div>
+                        ) : (
+                            <p>Drag & drop an Excel file here, or click to select one</p>
+                        )}
+                    </div>
+
+                    <div className="options">
+                        <label>Number of Days:</label>
+                        <input
+                            type="number"
+                            value={days}
+                            min="1"
+                            onChange={(e) => setDays(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="options">
+                        <label>Slots per Day:</label>
+                        <input
+                            type="number"
+                            value={slots}
+                            min="1"
+                            onChange={(e) => setSlots(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="options">
+                        <label>Strength per Slot:</label>
+                        <input
+                            type="number"
+                            value={strength}
+                            min="0"
+                            onChange={(e) => setStrength(e.target.value)}
+                        />
+                    </div>
+
+                    <button onClick={handleSubmit} className="generate-btn">
+                        Generate Timetable
+                    </button>
                 </div>
-
-                {file && <p className="file-name">Selected: {file.name}</p>}
-
-                <div className="options">
-                    <label>Number of Days:</label>
-                    <input
-                        type="number"
-                        value={days}
-                        min="1"
-                        onChange={(e) => setDays(e.target.value)}
-                    />
-                </div>
-
-                <div className="options">
-                    <label>Slots per Day:</label>
-                    <input
-                        type="number"
-                        value={slots}
-                        min="1"
-                        onChange={(e) => setSlots(e.target.value)}
-                    />
-                </div>
-
-                <div className="options">
-                    <label>Strength per Slot:</label>
-                    <input
-                        type="number"
-                        value={strength}
-                        min="0"
-                        onChange={(e) => setStrength(e.target.value)}
-                    />
-                </div>
-
-                <button onClick={handleSubmit} className="generate-btn">
-                    Generate Timetable
-                </button>
             </div>
 
-            <footer className="footer">
-                <p>Project Mentor: Dr. Sandeep Saini</p>
-                <p>Developed by: Romit Sovakar, Ayush Khandal, Yatharth Patil</p>
-            </footer>
+            <Footer />
 
             {loading && (
                 <div className="loader-overlay">
