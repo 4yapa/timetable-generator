@@ -1,4 +1,3 @@
-# Multi-stage build for optimized image size
 FROM nikolaik/python-nodejs:python3.12-nodejs22 AS builder
 
 RUN apt-get update && apt-get install -y g++ make && rm -rf /var/lib/apt/lists/*
